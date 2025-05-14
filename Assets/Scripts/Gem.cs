@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -9,5 +10,6 @@ public class Gem : MonoBehaviour{
         GetComponent<SpriteRenderer>().sprite = gemType.sprite;
     }
     new public GemType GetType() => gemType;
-     
+
+    internal void DestroyGem() => Destroy(gameObject);
 }
