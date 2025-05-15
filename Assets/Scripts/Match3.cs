@@ -38,7 +38,7 @@ public class Match3 : MonoBehaviour{
     private void OnSelectGem(){ 
         Vector2Int gridPosition = grid.GetXY(Camera.main.ScreenToWorldPoint(inputReader.Selected));
 
-        if (!IsValidPosition(gridPosition) || IsEmptyPosition(gridPosition)) return;
+        if (!grid.IsValid(gridPosition.x, gridPosition.y) || IsEmptyPosition(gridPosition)) return;
 
         if (selectedGem == gridPosition){
             audioManager.PlayDeselect();
@@ -52,13 +52,8 @@ public class Match3 : MonoBehaviour{
     }
 
     private bool IsEmptyPosition(Vector2Int gridPosition) => grid.GetValue(gridPosition.x, gridPosition.y) == null;
-
-    private bool IsValidPosition(Vector2Int gridPosition) => gridPosition.x >= 0 && gridPosition.y >= 0 && gridPosition.x < width && gridPosition.y < height;
-
     private void SelectGem(Vector2Int gridPosition) => selectedGem = gridPosition;
-
     private void DeselectGem() =>selectedGem = Vector2Int.one * -1;
-    
 
     private IEnumerator RunGameLoop(Vector2Int gridPositionA, Vector2Int gridPositionB){
         StartCoroutine(SwapGems(gridPositionA, gridPositionB));   
@@ -90,7 +85,7 @@ public class Match3 : MonoBehaviour{
                 if (grid.GetValue(x, y) == null){
                     for (int i = y + 1; i < height; i++){
                         if (grid.GetValue(x, i) != null){
-                            Gem gem = grid.GetValue(x, i).GetValue();
+                            Gem gem = grid.GetValue(x, i).GridObj;
                             grid.SetValue(x, y, grid.GetValue(x, i));
                             grid.SetValue(x, i, null);
                             gem.transform
@@ -110,7 +105,7 @@ public class Match3 : MonoBehaviour{
         audioManager.PlayPop();
 
         foreach (Vector2Int match in matches){
-            Gem gem = grid.GetValue(match.x, match.y).GetValue();
+            Gem gem = grid.GetValue(match.x, match.y).GridObj;
             grid.SetValue(match.x, match.y, null);
 
             DestroyVfx(match);
@@ -142,7 +137,7 @@ public class Match3 : MonoBehaviour{
 
                 if (gemA == null || gemB == null || gemC == null) continue;
 
-                if (gemA.GetValue().GetType() == gemB.GetValue().GetType() && gemB.GetValue().GetType()  == gemC.GetValue().GetType()) {
+                if (gemA.GridObj.GetType() == gemB.GridObj.GetType() && gemB.GridObj.GetType()  == gemC.GridObj.GetType()) {
                     matches.Add(new Vector2Int(x, y));
                     matches.Add(new Vector2Int(x + 1, y));
                     matches.Add(new Vector2Int(x + 2, y));
@@ -159,7 +154,7 @@ public class Match3 : MonoBehaviour{
 
                 if (gemA == null || gemB == null || gemC == null) continue;
 
-                if (gemA.GetValue().GetType() == gemB.GetValue().GetType() && gemB.GetValue().GetType()  == gemC.GetValue().GetType()) {
+                if (gemA.GridObj.GetType() == gemB.GridObj.GetType() && gemB.GridObj.GetType()  == gemC.GridObj.GetType()) {
                     matches.Add(new Vector2Int(x, y));
                     matches.Add(new Vector2Int(x, y + 1));
                     matches.Add(new Vector2Int(x, y + 2));
@@ -177,10 +172,10 @@ public class Match3 : MonoBehaviour{
         GridObject<Gem> gridObjectA = grid.GetValue(gridPositionA.x, gridPositionA.y);
         GridObject<Gem> gridObjectB = grid.GetValue(gridPositionB.x, gridPositionB.y);
 
-        gridObjectA.GetValue().transform
+        gridObjectA.GridObj.transform
             .DOMove(grid.GetWorldPositionCenter(gridPositionB.x, gridPositionB.y), 0.5f)
             .SetEase(ease);
-        gridObjectB.GetValue().transform
+        gridObjectB.GridObj.transform
             .DOMove(grid.GetWorldPositionCenter(gridPositionA.x, gridPositionA.y), 0.5f)
             .SetEase(ease);
                 
@@ -191,7 +186,7 @@ public class Match3 : MonoBehaviour{
     }
 
     private void InitializeGrid(){
-        grid = GridSystem2D<GridObject<Gem>>.VerticalGrid(width, height, cellSize, origin, debug);
+        grid = GridSystem2D<GridObject<Gem>>.CreateGrid(GridSystem2D<GridObject<Gem>>.GridLayout.Vertical, width, height, cellSize, origin, debug);
         for (int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
                 CreateGem(x, y);
@@ -203,7 +198,7 @@ public class Match3 : MonoBehaviour{
         Gem gem = Instantiate(gemPrefab, grid.GetWorldPositionCenter(x, y), Quaternion.identity, transform);
         gem.SetType(gemTypes[Random.Range(0, gemTypes.Length)]);
         GridObject<Gem> gridObject = new GridObject<Gem>(grid, x, y);
-        gridObject.SetValue(gem);
+        gridObject.GridObj = gem;
         grid.SetValue(x, y, gridObject);   
     }
 }

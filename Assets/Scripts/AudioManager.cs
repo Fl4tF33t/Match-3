@@ -16,6 +16,13 @@ public class AudioManager : MonoBehaviour{
         audioSource = GetComponent<AudioSource>();
     }
 
+    private void Start() {
+        GameManager.Instance.OnSelection += arg => audioSource.PlayOneShot(arg ? click : deselect);
+        GameManager.Instance.OnFindMatch += arg => audioSource.PlayOneShot(arg ? match : noMatch);
+        BoardManager.Instance.OnGemCreation += () => PlayRandomPitch(pop);
+        AnimationManager.Instance.OnGemFall += () => PlayRandomPitch(whoosh);
+        AnimationManager.Instance.OnDeleteMatches += () => PlayRandomPitch(pop);
+    }
     public void PlayClick() => audioSource.PlayOneShot(click);
     public void PlayDeselect() => audioSource.PlayOneShot(deselect);
     public void PlayMatch() => audioSource.PlayOneShot(match);
