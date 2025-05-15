@@ -13,7 +13,6 @@ public class GridSystem2D<T> {
     private readonly float cellSize;
     private readonly Vector3 origin;
     private readonly T[,] grid;
-
     private readonly ICoordinateConverter iCoordinateConverter;
 
     public event Action<int, int, T> OnGridChanged;
@@ -77,7 +76,7 @@ public class GridSystem2D<T> {
     public Vector3 GetWorldPositionCenter (int x, int y) => iCoordinateConverter.GetToWorldCenter(x, y, cellSize, origin);
     public Vector2Int GetXY (Vector3 worldPositon) => iCoordinateConverter.WorldToGrid(worldPositon, cellSize, origin);
 
-    private TextMeshPro CreateWorldText(GameObject parent, string text, Vector3 position, Vector3 direction, int fontSize = 2, Color color = default, TextAlignmentOptions textAlignmentOptions= TextAlignmentOptions.Center, int sortingOrder = 0) {
+    private void CreateWorldText(GameObject parent, string text, Vector3 position, Vector3 direction, int fontSize = 2, Color color = default, TextAlignmentOptions textAlignmentOptions= TextAlignmentOptions.Center, int sortingOrder = 0) {
         GameObject gameObject = new GameObject ("DebugText_" + text, typeof(TextMeshPro));
         gameObject.transform.SetParent(parent.transform);
         gameObject.transform.position = position;
@@ -90,8 +89,6 @@ public class GridSystem2D<T> {
         textMesh.alpha = 1.0f;
         textMesh.alignment = textAlignmentOptions;
         textMesh.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
-        
-        return textMesh;
     }
     
     // Coordinate Converter Interface and classes

@@ -1,12 +1,12 @@
 using UnityEngine;
-
 [RequireComponent(typeof(SpriteRenderer))]
-public class Gem : MonoBehaviour, IGem{
+public class Gem : MonoBehaviour{
     private GemType gemType;
     public static Gem Create(GemType gemType) {
         GameObject gemObj = new GameObject("Gem");
         Gem gem = gemObj.AddComponent<Gem>();
         gem.gemType = gemType;
+        
         if (gem.TryGetComponent(out SpriteRenderer spriteRenderer)) {
             spriteRenderer.sprite = gemType.sprite;
         }
@@ -16,17 +16,5 @@ public class Gem : MonoBehaviour, IGem{
         }
         return gem;
     }
-    public void SetType(GemType gemType){
-        // this.gemType = gemType;
-        // GetComponent<SpriteRenderer>().sprite = gemType.sprite;
-    }
-    public new GemType GetType() => gemType;
-
-    public void DestroyGem() => Destroy(gameObject);
-
-    
-}
-public interface IGem {
-    public GemType GetType();
-    public void DestroyGem();
+    public GemType GetGemType() => gemType;
 }

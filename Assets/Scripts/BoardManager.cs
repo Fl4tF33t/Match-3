@@ -38,7 +38,7 @@ public class BoardManager : Singleton<BoardManager> {
 
                 if (gemA == null || gemB == null || gemC == null) continue;
 
-                if (gemA.GridObj.GetType() == gemB.GridObj.GetType() && gemB.GridObj.GetType()  == gemC.GridObj.GetType()) {
+                if (gemA.GridObj.GetGemType() == gemB.GridObj.GetGemType() && gemB.GridObj.GetGemType()  == gemC.GridObj.GetGemType()) {
                     matches.Add(new Vector2Int(x, y));
                     matches.Add(new Vector2Int(x + 1, y));
                     matches.Add(new Vector2Int(x + 2, y));
@@ -55,7 +55,7 @@ public class BoardManager : Singleton<BoardManager> {
 
                 if (gemA == null || gemB == null || gemC == null) continue;
 
-                if (gemA.GridObj.GetType() == gemB.GridObj.GetType() && gemB.GridObj.GetType() == gemC.GridObj.GetType()) {
+                if (gemA.GridObj.GetGemType() == gemB.GridObj.GetGemType() && gemB.GridObj.GetGemType() == gemC.GridObj.GetGemType()) {
                     matches.Add(new Vector2Int(x, y));
                     matches.Add(new Vector2Int(x, y + 1));
                     matches.Add(new Vector2Int(x, y + 2));

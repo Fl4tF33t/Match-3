@@ -23,13 +23,6 @@ public class AudioManager : MonoBehaviour{
         AnimationManager.Instance.OnGemFall += () => PlayRandomPitch(whoosh);
         AnimationManager.Instance.OnDeleteMatches += () => PlayRandomPitch(pop);
     }
-    public void PlayClick() => audioSource.PlayOneShot(click);
-    public void PlayDeselect() => audioSource.PlayOneShot(deselect);
-    public void PlayMatch() => audioSource.PlayOneShot(match);
-    public void PlayNoMatch() => audioSource.PlayOneShot(noMatch);
-    public void PlayPop() => PlayRandomPitch(pop);
-    public void PlayWhoosh() => PlayRandomPitch(whoosh);
-
     private void PlayRandomPitch(AudioClip audioClip){
         audioSource.pitch = Random.Range(0.8f, 1.1f);
         audioSource.PlayOneShot(audioClip);

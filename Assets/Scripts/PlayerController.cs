@@ -16,6 +16,6 @@ public class PlayerController : Singleton<PlayerController> {
         pointerLocationAction = playerInput.actions["PointerLocation"];
         clickAction = playerInput.actions["Click"];
 
-        clickAction.performed += context => OnClick?.Invoke(PointerLocation);
+        clickAction.performed += _ => OnClick?.Invoke(PointerLocation);
     }
 }
