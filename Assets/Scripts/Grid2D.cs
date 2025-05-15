@@ -110,9 +110,9 @@ public class GridSystem2D<T> {
         }
 
         public override Vector2Int WorldToGrid(Vector3 worldPosition, float cellSize, Vector3 origin) {
-            Vector3 gridPostion = (worldPosition - origin) / cellSize;
-            int x = Mathf.FloorToInt(gridPostion.x);
-            int y = Mathf.FloorToInt(gridPostion.y);
+            Vector3 gridPosition = (worldPosition - origin) / cellSize;
+            int x = Mathf.FloorToInt(gridPosition.x);
+            int y = Mathf.FloorToInt(gridPosition.y);
             return new Vector2Int(x, y);
         }
 
@@ -130,9 +130,9 @@ public class GridSystem2D<T> {
         }
 
         public override Vector2Int WorldToGrid(Vector3 worldPosition, float cellSize, Vector3 origin) {
-            Vector3 gridPostion = (worldPosition - origin) / cellSize;
-            int x = Mathf.FloorToInt(gridPostion.x);
-            int y = Mathf.FloorToInt(gridPostion.z);
+            Vector3 gridPosition = (worldPosition - origin) / cellSize;
+            int x = Mathf.FloorToInt(gridPosition.x);
+            int y = Mathf.FloorToInt(gridPosition.z);
             return new Vector2Int(x, y);
         }
 
