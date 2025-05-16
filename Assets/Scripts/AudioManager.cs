@@ -17,7 +17,7 @@ public class AudioManager : MonoBehaviour{
     }
 
     private void Start() {
-        GameManager.Instance.OnSelection += arg => audioSource.PlayOneShot(arg ? click : deselect);
+        GameManager.Instance.OnSelection += (arg, arg2) => audioSource.PlayOneShot(arg ? click : deselect);
         GameManager.Instance.OnFindMatch += arg => audioSource.PlayOneShot(arg ? match : noMatch);
         BoardManager.Instance.OnGemCreation += () => PlayRandomPitch(pop);
         AnimationManager.Instance.OnGemFall += () => PlayRandomPitch(whoosh);

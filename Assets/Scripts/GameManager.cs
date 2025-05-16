@@ -10,7 +10,8 @@ public class GameManager : Singleton<GameManager> {
     private GridSystem2D<GridObject<Gem>> grid;
     
     private Vector2Int selectedGem = Vector2Int.one * -1;
-    public event Action<bool> OnSelection;
+    private Gem currentSelectedGem = null;
+    public event Action<bool, Gem> OnSelection;
     public event Action<bool> OnFindMatch;
     private void Start() {
         boardManager = BoardManager.Instance;
@@ -41,12 +42,14 @@ public class GameManager : Singleton<GameManager> {
     }
     private void SelectGem(Vector2Int gridPosition) {
         selectedGem = gridPosition;
-        OnSelection?.Invoke(true);
+        currentSelectedGem = grid.GetValue(gridPosition.x, gridPosition.y).GridObj;
+        OnSelection?.Invoke(true, currentSelectedGem);
     }
 
     private void DeselectGem() {
         selectedGem = Vector2Int.one * -1;
-        OnSelection?.Invoke(false);
+        OnSelection?.Invoke(false, currentSelectedGem);
+        currentSelectedGem = null;
     } 
     private IEnumerator RunGameLoop(Vector2Int gridPositionA, Vector2Int gridPositionB) {
         boardManager.SwapGems(gridPositionA, gridPositionB, out GameObject objA, out GameObject objB);
